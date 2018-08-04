@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.telegram.messenger"
+    package="com.telemint.messenger"
     android:installLocation="auto">
 
     <application
@@ -10,7 +10,7 @@
         android:roundIcon="@drawable/ic_launcher"
         android:label="@string/AppName"
         android:theme="@style/Theme.TMessages.Start"
-        android:name=".ApplicationLoader"
+        android:name="org.telegram.messenger.ApplicationLoader"
         android:hardwareAccelerated="@bool/useHardwareAcceleration"
         android:largeHeap="true"
         android:supportsRtl="false"

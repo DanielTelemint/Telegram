@@ -23,6 +23,8 @@ import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.SparseArray;
 
+import com.telemint.messenger.R;
+
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.SerializedData;

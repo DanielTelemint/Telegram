@@ -27,6 +27,8 @@ import android.service.chooser.ChooserTarget;
 import android.service.chooser.ChooserTargetService;
 import android.text.TextUtils;
 
+import com.telemint.messenger.R;
+
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.LaunchActivity;

@@ -39,6 +39,9 @@ import android.util.LongSparseArray;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
+import com.telemint.messenger.BuildConfig;
+import com.telemint.messenger.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

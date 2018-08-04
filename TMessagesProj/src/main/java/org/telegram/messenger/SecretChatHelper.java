@@ -14,6 +14,8 @@ import android.content.DialogInterface;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
 
+import com.telemint.messenger.R;
+
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.tgnet.AbstractSerializedData;
 import org.telegram.tgnet.ConnectionsManager;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">텔레그램</string>
-    <string name="AppNameBeta">텔레그램</string>
+    <string name="AppName">텔레민트</string>
+    <string name="AppNameBeta">텔레민트 베타</string>
     <string name="LanguageName">한국어</string>
     <string name="English">한국어</string>
     <string name="LanguageNameInEnglish">한국어</string>
@@ -176,7 +176,7 @@
     <string name="Italic">기울임꼴</string>
     <string name="Mono">고정폭</string>
     <string name="Regular">일반</string>
-    <string name="ContactsPermissionAlert">회원님이 모든 기기를 걸쳐 친구들과 소통하려면 **텔레그램**에게 회원님의 연락처에 접근할 권한을 부여해 주세요. 단단히 암호화된 텔레그램 서버로 회원님의 연락처가 지속적으로 동기화될 것입니다.</string>
+    <string name="ContactsPermissionAlert">회원님이 모든 기기를 걸쳐 친구들과 소통하려면 **텔레민트**에게 회원님의 연락처에 접근할 권한을 부여해 주세요. 단단히 암호화된 텔레그램 서버로 회원님의 연락처가 지속적으로 동기화될 것입니다.</string>
     <string name="ContactsPermissionAlertNotNow">나중에</string>
     <string name="ContactsPermissionAlertContinue">계속</string>
     <string name="YourContacts">텔레그램에 있는 회원님의 연락처</string>
@@ -719,12 +719,12 @@
     <string name="NotificationActionPinnedGeoLiveChannel">%1$s 님이 실시간 위치를 고정했습니다</string>
     <string name="NotificationActionPinnedGifChannel">%1$s 님이 GIF를 고정했습니다</string>
     <string name="NotificationActionPinnedMusicChannel">%1$s 님이 트랙을 고정했습니다</string>
-    <string name="SecretChatName">텔레그램</string>
+    <string name="SecretChatName">텔레민트</string>
     <!--contacts view-->
     <string name="SelectContact">연락처 선택</string>
     <string name="ContactShare">연락처 공유</string>
     <string name="NoContacts">연락처 없음</string>
-    <string name="InviteText2">안녕하세요, 전 텔레그램이라는 메신저를 사용하고 있어요. 함께 사용해요! 여기서 다운로드하실 수 있어요.  %1$s</string>
+    <string name="InviteText2">안녕하세요, 전 텔레민트라는 메신저를 사용하고 있어요. 함께 사용해요! 여기서 다운로드하실 수 있어요.  %1$s</string>
     <string name="TodayAt">오늘</string>
     <string name="YesterdayAt">어제</string>
     <string name="TodayAtFormatted">%1$s</string>
@@ -742,9 +742,9 @@
     <string name="WithinAMonth">한 달 이내 마지막으로 접속</string>
     <string name="ALongTimeAgo">마지막으로 접속한 지 오래됨</string>
     <string name="NewMessageTitle">메시지 보내기</string>
-    <string name="InviteFriendsHelp">텔레그램으로 초대할 연락 상대를 선택하세요</string>
-    <string name="InviteToTelegram">텔레그램으로 초대</string>
-    <string name="ShareTelegram">텔레그램 공유...</string>
+    <string name="InviteFriendsHelp">텔레민트으로 초대할 연락 상대를 선택하세요</string>
+    <string name="InviteToTelegram">텔레민트로 초대</string>
+    <string name="ShareTelegram">텔레민트 공유...</string>
     <string name="UpdateContactsTitle">연락처를 업데이트할까요?</string>
     <string name="UpdateContactsMessage">텔레그램이 아직 동기화되지 않은 여러 연락처를 찾아냈습니다. 연락처를 동기화하시겠습니까? 본인의 기기, SIM 카드와 Google 계정을 사용하는 중이라면 \'확인\'을 누르십시오.</string>
     <!--group create view-->
@@ -1065,7 +1065,7 @@
     <string name="Emoji">이모지</string>
     <string name="EmojiBigSize">큰 이모지 하나 그리기</string>
     <string name="EmojiUseDefault">시스템 기본 이모지 사용</string>
-    <string name="TelegramVersion">Android용 텔레그램 %1$s</string>
+    <string name="TelegramVersion">Android용 텔레민트 %1$s</string>
     <string name="DebugMenu">디버그 메뉴</string>
     <string name="DebugSendLogs">로그 보내기</string>
     <string name="DebugClearLogs">로그 초기화</string>
@@ -1120,7 +1120,7 @@
     <!--cache view-->
     <string name="LocalDatabase">로컬 데이터베이스</string>
     <string name="LocalDatabaseClear">캐시가 된 문자 메시지를 비울까요?</string>
-    <string name="LocalDatabaseInfo">로컬 데이터베이스를 비우면 캐시된 메시지의 글을 지우고 데이터베이스를 압축해 내장 디스크 공간을 절약합니다. 텔레그램이 작동하는데 데이터가 어느 정도 필요하므로 데이터베이스 크기는 0이 되지 않습니다.\n\n이 작업은 완료되기까지 몇 분 정도 걸릴 수 있습니다.</string>
+    <string name="LocalDatabaseInfo">로컬 데이터베이스를 비우면 캐시된 메시지의 글을 지우고 데이터베이스를 압축해 내장 디스크 공간을 절약합니다. 텔레민트가 작동하는데 데이터가 어느 정도 필요하므로 데이터베이스 크기는 0이 되지 않습니다.\n\n이 작업은 완료되기까지 몇 분 정도 걸릴 수 있습니다.</string>
     <string name="ClearMediaCache">캐시 비우기</string>
     <string name="CacheClear">비우기</string>
     <string name="CalculatingSize">계산 중...</string>
@@ -1142,7 +1142,7 @@
     <string name="PassportRequestedInformation">"요청 받은 정보 "</string>
     <string name="PassportProvidedInformation">제공한 정보</string>
     <string name="PassportInfoTitle">텔레그램 패스포트가 무엇인가요?</string>
-    <string name="PassportInfo">텔레그램 패스포트와 함께라면 본인 확인이 필요한 웹사이트와 서비스에 손쉽게 가입하실 수 있습니다.\n\n회원님의 정보와 개인 데이터, 서류는 단대단 암호화로 보호됩니다. 텔레그램을 포함하여, 누구도 회원님의 승인 없이 이들에 접속할 수 없습니다.\n\nFAQ를 방문하여 더 많은 정보를 얻으실 수 있습니다.</string>
+    <string name="PassportInfo">텔레그램 패스포트와 함께라면 본인 확인이 필요한 웹사이트와 서비스에 손쉽게 가입하실 수 있습니다.\n\n회원님의 정보와 개인 데이터, 서류는 단대단 암호화로 보호됩니다. 텔레민트, 텔레그램을 포함하여, 누구도 회원님의 승인 없이 이들에 접속할 수 없습니다.\n\nFAQ를 방문하여 더 많은 정보를 얻으실 수 있습니다.</string>
     <string name="TelegramPassportCreatePasswordInfo">Please create a password to secure your personal data with end-to-end encryption.\n\nThis password will also be required whenever you log in to Telegram on a new device.</string>
     <string name="TelegramPassportCreatePassword">비밀번호를 만드세요</string>
     <string name="TelegramPassportDelete">패스포트 삭제</string>
@@ -1274,7 +1274,7 @@
     <!--passcode view-->
     <string name="Passcode">암호 잠금</string>
     <string name="ChangePasscode">암호 바꾸기</string>
-    <string name="ChangePasscodeInfo">암호를 설정하시면 대화창에 잠금 아이콘이 표시됩니다. 텔레그램을 잠그거나 잠금 해제하려면 이 아이콘을 누르세요.\n\n주의: 암호를 잊어버리면 앱을 지우고 재설치하셔야 합니다. 이 경우 모든 비밀 대화가 사라집니다.</string>
+    <string name="ChangePasscodeInfo">암호를 설정하시면 대화창에 잠금 아이콘이 표시됩니다. 텔레민트를 잠그거나 잠금 해제하려면 이 아이콘을 누르세요.\n\n주의: 암호를 잊어버리면 앱을 지우고 재설치하셔야 합니다. 이 경우 모든 비밀 대화가 사라집니다.</string>
     <string name="PasscodePIN">PIN</string>
     <string name="PasscodePassword">암호</string>
     <string name="EnterCurrentPasscode">현재 암호를 임력하세요</string>
@@ -1284,7 +1284,7 @@
     <string name="ReEnterYourPasscode">새 암호를 입력하세요</string>
     <string name="PasscodeDoNotMatch">암호가 일치하지 않습니다.</string>
     <string name="AutoLock">자동 잠금</string>
-    <string name="AutoLockInfo">일정 시간이 지나면 텔레그램을 잠급니다.</string>
+    <string name="AutoLockInfo">일정 시간이 지나면 텔레민트를 잠급니다.</string>
     <string name="AutoLockInTime">%1$s 뒤</string>
     <string name="AutoLockDisabled">사용 안 함</string>
     <string name="UnlockFingerprint">지문으로 잠금 해제</string>
@@ -1627,7 +1627,7 @@
     <string name="ActionBotDocumentRentalAgreement">임차 계약서</string>
     <string name="ActionBotDocumentPhone">전화번호</string>
     <string name="ActionBotDocumentEmail">이메일 주소</string>
-    <string name="UnsupportedMedia">이 메시지는 현재 텔레그램 버전에서 지원되지 않습니다. 메시지를 보시려면 http://telegram.org/update에서 앱을 업데이트하세요.</string>
+    <string name="UnsupportedMedia">이 메시지는 현재 텔레민트 버전에서 지원되지 않습니다. </string>
     <string name="AttachPhoto">사진</string>
     <string name="AttachVideo">동영상</string>
     <string name="AttachDestructingPhoto">자동 삭제 사진</string>
@@ -1647,8 +1647,8 @@
     <string name="ActionTakeScreenshootYou">회원님이 스크린샷을 찍었습니다!</string>
     <string name="ActionTakeScreenshoot">un1 님이 스크린샷을 찍었습니다!</string>
     <!--Alert messages-->
-    <string name="UpdateTelegram">텔레그램을 업데이트하세요</string>
-    <string name="UpdateAppAlert">죄송합니다. 텔레그램 앱이 옛 버전이기에 이 요청을 받을 수 없습니다. 텔레그램을 업데이트하세요.</string>
+    <string name="UpdateTelegram">텔레민트를 업데이트하세요</string>
+    <string name="UpdateAppAlert">죄송합니다. 텔레민트 앱이 옛 버전이기에 이 요청을 받을 수 없습니다. 텔레민트를 업데이트하세요.</string>
     <string name="InvalidPhoneNumber">올바른 전화번호를 입력해 주세요</string>
     <string name="PleaseLoginPassport">텔레그램 패스포트를 사용하려면 텔레그램 계정에 로그인해 주세요.</string>
     <string name="BannedPhoneNumber">차단된 전화번호</string>
@@ -1663,7 +1663,7 @@
     <string name="NoPlayerInstalled">동영상 재생기가 없습니다. 계속하려면 앱을 설치하세요.</string>
     <string name="NoMailInstalled">발생한 문제에 대하여 sms@stel.com 주소로 이메일을 보내주세요.</string>
     <string name="NoHandleAppInstalled">\'%1$s\' 파일 유형을 처리할 수 있는 응용 프로그램이 없습니다. 계속하려면 프로그램을 설치해 주세요</string>
-    <string name="InviteUser">지인분이 아직 텔레그램을 설치하지 않았습니다. 초대장을 보낼까요?</string>
+    <string name="InviteUser">지인분이 아직 텔레민트를 설치하지 않았습니다. 초대장을 보낼까요?</string>
     <string name="AreYouSure">확실합니까?</string>
     <string name="AddToTheGroupTitle">%2$s 대화방에 %1$s 님을 추가할까요?</string>
     <string name="AddToTheGroupForwardCount">전달할 최근 메시지 개수:</string>
@@ -1721,27 +1721,27 @@
     <string name="TosDeclineDeleteAccount">Warning, this will irreversibly delete your Telegram account along with all the data you store in the Telegram cloud.\n\nImportant: You can Cancel now and export your data before deleting your account instead losing it all. (To do this, open the latest version of Telegram Desktop and go to Settings &gt; Export Telegram Data.)</string>
     <!--permissions-->
     <string name="PermissionContacts">회원님이 모든 기기에서 친구들과 연락할 수 있도록 하기 위해 텔레그램에게 회원님의 연락처에 접근할 권한이 필요합니다.</string>
-    <string name="PermissionStorage">사진, 동영상, 음악과 그 밖의 미디어를 보내고 저장하려면 텔레그램에게 저장소 접근 권한을 부여하셔야 합니다.</string>
-    <string name="PermissionNoAudio">음성 메시지를 보내려면 텔레그램에게 마이크 접근 권한을 부여하셔야 합니다.</string>
-    <string name="PermissionNoAudioVideo">동영상을 녹화하려면 텔레그램에게 마이크 접근 권한을 부여하셔야 합니다.</string>
-    <string name="PermissionNoCamera">사진과 동영상을 촬영하려면 텔레그램에게 카메라 접근 권한을 부여하셔야 합니다.</string>
-    <string name="PermissionNoLocation">회원님의 위치를 친구들과 공유하려면 텔레그램에게 위치 접근 권한을 부여하셔야 합니다.</string>
-    <string name="PermissionNoLocationPosition">텔레그램에게 위치 접근 권한이 필요합니다.</string>
-    <string name="PermissionDrawAboveOtherApps">화면속화면 모드로 동영상을 재생하려면 텔레그램에게 다른 앱 위에 그릴 수 있는 권한을 부여하셔야 합니다.</string>
+    <string name="PermissionStorage">사진, 동영상, 음악과 그 밖의 미디어를 보내고 저장하려면 텔레민트에게 저장소 접근 권한을 부여하셔야 합니다.</string>
+    <string name="PermissionNoAudio">음성 메시지를 보내려면 텔레민트에게 마이크 접근 권한을 부여하셔야 합니다.</string>
+    <string name="PermissionNoAudioVideo">동영상을 녹화하려면 텔레민트에게 마이크 접근 권한을 부여하셔야 합니다.</string>
+    <string name="PermissionNoCamera">사진과 동영상을 촬영하려면 텔레민트에게 카메라 접근 권한을 부여하셔야 합니다.</string>
+    <string name="PermissionNoLocation">회원님의 위치를 친구들과 공유하려면 텔레민트에게 위치 접근 권한을 부여하셔야 합니다.</string>
+    <string name="PermissionNoLocationPosition">텔레민트에게 위치 접근 권한이 필요합니다.</string>
+    <string name="PermissionDrawAboveOtherApps">화면속화면 모드로 동영상을 재생하려면 텔레민트에게 다른 앱 위에 그릴 수 있는 권한을 부여하셔야 합니다.</string>
     <string name="PermissionOpenSettings">설정</string>
     <!--Intro view-->
-    <string name="Page1Title">텔레그램</string>
+    <string name="Page1Title">텔레민트</string>
     <string name="Page2Title">눈부신 속도</string>
     <string name="Page3Title">평생 무료</string>
     <string name="Page4Title">철통 보안</string>
     <string name="Page5Title">강력함</string>
     <string name="Page6Title">클라우드 기반</string>
     <string name="Page1Message">세상에서 가장 **빠른** 메신저입니다.\n **무료**이며 **안전합니다**.</string>
-    <string name="Page2Message">**텔레그램**은 그 어떤 메신저보다도\n빠르게 메시지를 전달합니다.</string>
-    <string name="Page3Message">**텔레그램**은 영원히 무료입니다. \n광고도, 구독료도 없습니다.</string>
-    <string name="Page4Message">**텔레그램**은 회원님의 메시지를\n해커의 공격으로부터 안전하게 지켜냅니다.</string>
-    <string name="Page5Message">**텔레그램**은 대화나 미디어의 용량에\n제한을 두지 않습니다.</string>
-    <string name="Page6Message">**텔레그램**은 어느 기기에서든지\n자유롭게 사용하실 수 있습니다.</string>
+    <string name="Page2Message">**텔레민트**은 그 어떤 메신저보다도\n빠르게 메시지를 전달합니다.</string>
+    <string name="Page3Message">**텔레민트**은 영원히 무료입니다. \n광고도, 구독료도 없습니다.</string>
+    <string name="Page4Message">**텔레민트**은 회원님의 메시지를\n해커의 공격으로부터 안전하게 지켜냅니다.</string>
+    <string name="Page5Message">**텔레민트**은 대화나 미디어의 용량에\n제한을 두지 않습니다.</string>
+    <string name="Page6Message">**텔레민트**은 어느 기기에서든지\n자유롭게 사용하실 수 있습니다.</string>
     <string name="StartMessaging">시작하기</string>
     <!-- VoIP -->
     <string name="AccountSettings">계정설정</string>

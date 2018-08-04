@@ -31,6 +31,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.telemint.messenger.R;
+
 import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.ui.LaunchActivity;
 

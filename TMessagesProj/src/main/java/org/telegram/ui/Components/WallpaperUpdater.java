@@ -19,12 +19,12 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.BuildConfig;
+import com.telemint.messenger.BuildConfig;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.LocaleController;
-import org.telegram.messenger.R;
+import com.telemint.messenger.R;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.ActionBar.AlertDialog;
 
@@ -34,7 +34,6 @@ import java.io.FileOutputStream;
 public class WallpaperUpdater {
 
     private String currentPicturePath;
-    private File picturePath = null;
     private Activity parentActivity;
     private WallpaperUpdaterDelegate delegate;
     private File currentWallpaperPath;

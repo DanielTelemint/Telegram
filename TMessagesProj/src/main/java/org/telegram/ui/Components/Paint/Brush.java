@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.telegram.messenger.ApplicationLoader;
-import org.telegram.messenger.R;
+import com.telemint.messenger.R;
 
 public interface Brush {
 

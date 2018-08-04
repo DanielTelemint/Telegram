@@ -69,7 +69,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.VideoEditedInfo;
 import org.telegram.messenger.camera.*;
 import org.telegram.messenger.support.widget.LinearLayoutManager;
-import org.telegram.messenger.R;
+import com.telemint.messenger.R;
 import org.telegram.messenger.support.widget.RecyclerView;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.AlertDialog;

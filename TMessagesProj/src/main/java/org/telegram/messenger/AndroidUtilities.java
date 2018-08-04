@@ -80,6 +80,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.internal.telephony.ITelephony;
+import com.telemint.messenger.BuildConfig;
+import com.telemint.messenger.R;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;

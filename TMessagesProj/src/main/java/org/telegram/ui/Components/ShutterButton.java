@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.R;
+import com.telemint.messenger.R;
 
 public class ShutterButton extends View {
 

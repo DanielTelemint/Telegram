@@ -52,6 +52,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.telemint.messenger.R;
+
 import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.messenger.exoplayer2.C;
 import org.telegram.messenger.exoplayer2.ExoPlayer;
