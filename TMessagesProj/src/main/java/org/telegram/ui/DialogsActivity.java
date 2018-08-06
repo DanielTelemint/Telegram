@@ -29,6 +29,8 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -37,9 +39,11 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -594,7 +598,18 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 notifyHeightChanged();
             }
         };
-        fragmentView = contentView;
+        //fragmentView = contentView;
+
+        LinearLayout tempLayout = new LinearLayout(context);
+        tempLayout.setOrientation(LinearLayout.VERTICAL);
+        fragmentView = tempLayout;
+
+
+        TabLayout tabLayout = new TabLayout(context);
+        tabLayout.addTab(tabLayout.newTab().setText("Wallet"));
+        tabLayout.addTab(tabLayout.newTab().setText("Chat"));
+        tabLayout.setTabTextColors(context.getResources().getColor(R.color.common_google_signin_btn_text_light_disabled),context.getResources().getColor(R.color.common_google_signin_btn_text_light_focused));
+        tempLayout.addView(tabLayout);
         
         listView = new RecyclerListView(context);
         listView.setVerticalScrollBarEnabled(true);
@@ -618,7 +633,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(layoutManager);
         listView.setVerticalScrollbarPosition(LocaleController.isRTL ? RecyclerListView.SCROLLBAR_POSITION_LEFT : RecyclerListView.SCROLLBAR_POSITION_RIGHT);
-        contentView.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        tempLayout.addView(listView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 0, 1, Gravity.NO_GRAVITY));
         listView.setOnItemClickListener(new RecyclerListView.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
