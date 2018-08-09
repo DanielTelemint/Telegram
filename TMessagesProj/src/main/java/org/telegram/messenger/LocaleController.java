@@ -794,14 +794,15 @@ public class LocaleController {
     }
 
     private String getStringInternal(String key, int res) {
-        String value = localeValues.get(key);
-        if (value == null) {
-            try {
-                value = ApplicationLoader.applicationContext.getString(res);
-            } catch (Exception e) {
-                FileLog.e(e);
-            }
+        String value = null;
+        try {
+            value = ApplicationLoader.applicationContext.getString(res);
+        } catch (Exception e) {
+            FileLog.e(e);
         }
+
+        if (value == null) value = localeValues.get(key);
+
         if (value == null) {
             value = "LOC_ERR:" + key;
         }

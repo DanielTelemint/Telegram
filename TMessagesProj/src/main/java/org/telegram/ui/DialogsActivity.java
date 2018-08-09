@@ -39,7 +39,6 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -69,6 +68,8 @@ import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
 import com.telemint.messenger.R;
+import com.telemint.ui.adapter.MainTabAdapter;
+
 import org.telegram.messenger.UserConfig;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BottomSheet;
@@ -433,6 +434,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
         }
         actionBar.setAllowOverlayTitle(true);
+        actionBar.setBackgroundColor(context.getResources().getColor(R.color.actionbar_bg));
 
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
@@ -598,25 +600,56 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 notifyHeightChanged();
             }
         };
-        //fragmentView = contentView;
-
-        LinearLayout tempLayout = new LinearLayout(context);
-        tempLayout.setOrientation(LinearLayout.VERTICAL);
-        fragmentView = tempLayout;
+        fragmentView = contentView;
 
 
-        TabLayout tabLayout = new TabLayout(context);
-        tabLayout.addTab(tabLayout.newTab().setText("Wallet"));
-        tabLayout.addTab(tabLayout.newTab().setText("Chat"));
-        tabLayout.setTabTextColors(context.getResources().getColor(R.color.common_google_signin_btn_text_light_disabled),context.getResources().getColor(R.color.common_google_signin_btn_text_light_focused));
-        tempLayout.addView(tabLayout);
-        
+
+        LinearLayout mainLayout = new LinearLayout(context);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        contentView.addView(mainLayout);
+
+        final TabLayout tabLayout = new TabLayout(context);
+        tabLayout.setSelectedTabIndicatorColor(context.getResources().getColor(R.color.tab_indicator));
+        tabLayout.setTabTextColors(context.getResources().getColor(R.color.tab_text),context.getResources().getColor(R.color.tab_text_selected));
+        mainLayout.addView(tabLayout);
+
+
+        ViewPager viewPager = new ViewPager(context);
+        mainLayout.addView(viewPager);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 2){
+                    floatingButton.setVisibility(View.VISIBLE);
+                }else{
+                    floatingButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        tabLayout.setupWithViewPager(viewPager);
+
         listView = new RecyclerListView(context);
         listView.setVerticalScrollBarEnabled(true);
         listView.setItemAnimator(null);
         listView.setInstantClick(true);
         listView.setLayoutAnimation(null);
         listView.setTag(4);
+
+        viewPager.setAdapter(new MainTabAdapter(context, this, listView));
+        tabLayout.getTabAt(0).setText("STAKING");
+        tabLayout.getTabAt(1).setText("Wallet");
+        tabLayout.getTabAt(2).setText("Chat");
+
         layoutManager = new LinearLayoutManager(context) {
             @Override
             public boolean supportsPredictiveItemAnimations() {
@@ -633,7 +666,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(layoutManager);
         listView.setVerticalScrollbarPosition(LocaleController.isRTL ? RecyclerListView.SCROLLBAR_POSITION_LEFT : RecyclerListView.SCROLLBAR_POSITION_RIGHT);
-        tempLayout.addView(listView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 0, 1, Gravity.NO_GRAVITY));
+        //tempLayout.addView(listView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 0, 1, Gravity.NO_GRAVITY));
         listView.setOnItemClickListener(new RecyclerListView.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -1068,8 +1101,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         contentView.addView(progressView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
         floatingButton = new ImageView(context);
-        floatingButton.setVisibility(onlySelect ? View.GONE : View.VISIBLE);
+        //floatingButton.setVisibility(onlySelect ? View.GONE : View.VISIBLE);
         floatingButton.setScaleType(ImageView.ScaleType.CENTER);
+        floatingButton.setVisibility(View.GONE);
 
         Drawable drawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), Theme.getColor(Theme.key_chats_actionBackground), Theme.getColor(Theme.key_chats_actionPressedBackground));
         if (Build.VERSION.SDK_INT < 21) {

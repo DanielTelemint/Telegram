@@ -8,6 +8,11 @@
         <item name="android:colorBackground">@android:color/white</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAccent">@color/tab_text_selected</item>
+        <item name="android:textColorHint">@color/tab_text_selected</item>
+        <item name="colorControlNormal">@color/tab_text_selected</item>
+        <item name="colorControlActivated">@color/tab_text_selected</item>
+        <item name="colorControlHighlight">@color/tab_text_selected</item>
     </style>
 
     <style name="Theme.TMessages" parent="@style/Theme.AppCompat">
@@ -99,6 +104,11 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <!--EDIT TEXT-->
+    <style name="TextInputAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/tab_text_selected</item>
     </style>
 
 </resources>

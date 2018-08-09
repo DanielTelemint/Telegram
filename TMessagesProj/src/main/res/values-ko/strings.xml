@@ -24,10 +24,10 @@
     <!--code enter view-->
     <string name="YourCode">휴대폰 인증</string>
     <string name="SentSmsCode">인증 코드가 담긴 SMS를 **%1$s**(으)로 보냈습니다.</string>
-    <string name="SentAppCode">회원님 기기에 설치된 **Telegram**앱으로 코드를 전송했습니다.</string>
+    <string name="SentAppCode">회원님 기기에 설치된 **Telemint**앱으로 코드를 전송했습니다.</string>
     <string name="SentCallCode">**%1$s** 번호로 인증 전화를 걸었습니다. \n\n전화를 받지 마세요. 텔레그램이 모든 것을 자동으로 처리합니다.</string>
     <string name="SentCallOnly">코드를 말해 드리기 위해 **%1$s** 번호로 전화를 걸고 있습니다.</string>
-    <string name="CallText">텔레그램이 %1$d:%2$02d 뒤에는 전화를 걸 것입니다</string>
+    <string name="CallText">텔레민트가 %1$d:%2$02d 뒤에는 전화를 걸 것입니다</string>
     <string name="SmsText">%1$d:%2$02d 뒤에는 SMS를 보낼 것입니다</string>
     <string name="Calling">회원님에게 전화 거는 중...</string>
     <string name="Code">코드</string>

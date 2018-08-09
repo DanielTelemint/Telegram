@@ -62,7 +62,7 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("config/telemint.keystore")
+            storeFile file("config/telemint_prototype.keystore")
             storePassword 'mint64791912'
             keyAlias 'Telemint'
             keyPassword 'mint64791912'
