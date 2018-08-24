@@ -436,6 +436,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         actionBar.setAllowOverlayTitle(true);
         actionBar.setBackgroundColor(context.getResources().getColor(R.color.actionbar_bg));
 
+
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {

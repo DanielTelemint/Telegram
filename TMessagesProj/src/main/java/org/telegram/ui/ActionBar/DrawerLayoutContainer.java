@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Keep;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -275,6 +276,7 @@ public class DrawerLayoutContainer extends FrameLayout {
         }
     }
 
+    /*
     public boolean onTouchEvent(MotionEvent ev) {
         if (!parentActionBarLayout.checkTransitionAnimation()) {
             if (drawerOpened && ev != null && ev.getX() > drawerPosition && !startedTracking) {
@@ -344,7 +346,7 @@ public class DrawerLayoutContainer extends FrameLayout {
             return startedTracking;
         }
         return false;
-    }
+    }*/
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {

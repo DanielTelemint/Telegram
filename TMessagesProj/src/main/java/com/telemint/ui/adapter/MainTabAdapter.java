@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.telemint.ui.view.StakingView;
 import com.telemint.ui.view.WalletView;
+import com.telemint.ui.view.WalletView2;
 
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.DialogsActivity;
@@ -47,7 +48,7 @@ public class MainTabAdapter extends PagerAdapter {
             collection.addView(stakingView);
             return stakingView;
         }else if(position == 1){
-            RelativeLayout walletView = new WalletView(mContext, mActivity);
+            RelativeLayout walletView = new WalletView2(mContext, mActivity);
             collection.addView(walletView);
             return walletView;
         }else{
