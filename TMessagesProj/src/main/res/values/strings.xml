@@ -2100,4 +2100,18 @@
     <string name="formatterDay24H">HH:mm</string>
     <string name="formatterDay12H">h:mm a</string>
     <string name="formatDateAtTime">%1$s at %2$s</string>
+    <!--tab title-->
+    <string name="chat">Chat</string>
+    <string name="wallet">Wallet</string>
+    <!--wallet view-->
+    <string name="staked">Staked</string>
+    <string name="createNewAccount">Create new account</string>
+    <string name="stake">Stake</string>
+    <string name="send">Send</string>
+    <string name="cosmosTools">Cosmos Tools</string>
+    <string name="staking">"Staking</string>
+    <string name="governance">Governance</string>
+    <string name="cosmosExplorer">CosmosExplorer</string>
+    <string name="transactionHistory">TransactionHistory</string>
+    <string name="notifications">Notifications</string>
 </resources>

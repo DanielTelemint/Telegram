@@ -87,11 +87,10 @@ laddr = "tcp://0.0.0.0:26656"
 external_address = ""
 
 # Comma separated list of seed nodes to connect to
-# seeds(7005) = "718145d422a823fd2a4e1e36e91b92bb0c4ddf8e@gaia-testnet.coinculture.net:26656,5922bf29b48a18c2300b85cc53f424fce23927ab@67.207.73.206:26656,7c8b8fd03577cd4817f5be1f03d506f879df98d8@gaia-7000-seed1.interblock.io:26656,a28737ff02391a6e00a1d3b79befd57e68e8264c@gaia-7000-seed2.interblock.io:26656,987ffd26640cd03d08ed7e53b24dfaa7956e612d@gaia-7000-seed3.interblock.io:26656"
 seeds = "7c8b8fd03577cd4817f5be1f03d506f879df98d8@gaia-seed1.interblock.io:26656, a28737ff02391a6e00a1d3b79befd57e68e8264c@gaia-seed2.interblock.io:26656, 987ffd26640cd03d08ed7e53b24dfaa7956e612d@gaia-seed3.interblock.io:26656,837ab35ee80e6882da08ab6244ef27538e73aedd@gaia-seed4.interblock.io:26656"
 
 # Comma separated list of nodes to keep persistent connections to
-persistent_peers = "10037c5be73bcfaff7b861855ac546d56efedda6 @209.97.181.31:26656, 537e1dfd55a95ec5e524f5df9aa418cab5bd7c07@47.254.29.36:26656"
+persistent_peers = "c9a78b6e772f1ac7fdb0a65cfb3edbf95d7f6dfe@13.209.98.244:26656, 860969d1ac118f5dbb0814718ab4542b8bf63669@13.125.21.122:26656, 9aa9d27e6d5859f579ee013e8362c675042e0baa@13.125.210.181:26656, 327c6c89b5b60b888644472857fa3e1c8440f758@13.125.184.241:26656"
 
 # UPNP port forwarding
 upnp = false

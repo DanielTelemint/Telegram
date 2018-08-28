@@ -647,9 +647,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         listView.setTag(4);
 
         viewPager.setAdapter(new MainTabAdapter(context, this, listView));
-        tabLayout.getTabAt(0).setText("STAKING");
-        tabLayout.getTabAt(1).setText("Wallet");
-        tabLayout.getTabAt(2).setText("Chat");
+        tabLayout.getTabAt(0).setText(context.getString(R.string.chat));
+        tabLayout.getTabAt(1).setText(context.getString(R.string.wallet));
+
 
         layoutManager = new LinearLayoutManager(context) {
             @Override

@@ -4,12 +4,9 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.telemint.ui.view.StakingView;
 import com.telemint.ui.view.WalletView;
-import com.telemint.ui.view.WalletView2;
 
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.DialogsActivity;
@@ -28,7 +25,7 @@ public class MainTabAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -43,17 +40,13 @@ public class MainTabAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
-        if(position == 0) {
-            LinearLayout stakingView = new StakingView(mContext, mActivity);
-            collection.addView(stakingView);
-            return stakingView;
-        }else if(position == 1){
-            RelativeLayout walletView = new WalletView2(mContext, mActivity);
-            collection.addView(walletView);
-            return walletView;
-        }else{
+        if(position == 0){
             collection.addView(dialogsListview);
             return dialogsListview;
+        }else{
+            RelativeLayout walletView = new WalletView(mContext);
+            collection.addView(walletView);
+            return walletView;
         }
 
     }

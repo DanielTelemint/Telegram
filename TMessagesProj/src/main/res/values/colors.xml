@@ -6,9 +6,12 @@
     <color name="tab_text">#666666</color>
     <color name="tab_text_selected">#167664</color>
     <color name="tab_staking_title">#FF8600</color>
-    <color name="text_title_default">#DE000000</color>
-    <color name="text_value_default">#666666</color>
+    <color name="text_title_default">#00695C</color>
+    <color name="text_value_default">#000000</color>
+    <color name="text_value_grey">#666666</color>
+    <color name="text_value_white">#FFFFFF</color>
     <color name="text_green">#004D40</color>
     <color name="btn_text_default">#ffffff</color>
-    <color name="btn_text_green">#FF004D40</color>
+    <color name="btn_text_green">#004D40</color>
+
 </resources>
