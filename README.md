@@ -1,4 +1,4 @@
-## Lunagram (ALPHA VERSION)
+## Lunagram
 
 Lunagram is a messenger application based on Telegram with a  built-in Cosmos wallet. Lunagram wallet supports Cosmos Atom transfers, staking, and governance.
 
@@ -8,7 +8,7 @@ Note: By setting your bio as your Cosmos account, your Cosmos address becomes pu
 
 Also, Lunagram wallet implements a transfer request via LMI(Lunamint Message Interface). Bot developers can integrate Cosmos payments by using our standard interface explained below.
 
-## Lunagram Message Interface, LMI
+## Lunagram Message Interface, LMI (BETA)
 
 ### Introduction
 
@@ -53,14 +53,14 @@ Please follow the format below before encrypting the message:
 }
 ```
 
-Field | Type | Description 
+Field | Type | Description
 ------|------|---------
 action | String | `send`
 requester_t_id | String | Telegram ID the person sending the LMI message
 tx.from | String | (Optional) Cosmos address sending the payment
 tx.to | String | Cosmos address receiving the payment
 tx.denom | String | Token demonination
-tx.amount | String | Token amount 
+tx.amount | String | Token amount
 tx.memo | String | (Optional) Memo field of the transaction
 callback.url | String | The callback base url that will be receiving the callback after the user's action has been completed. Must end in `/`. Callbacks only support https.
 callback.endpoint | String | Endpoint of the callback url. Please input the full path such as `usr/deposit`

@@ -1,4 +1,4 @@
-## Lunagram (ALPHA VERSION)
+## Lunagram
 
 루나그램은 코스모스 지갑이 내장되어있는 텔레그램 기반 메신저입니다. 루나그램 지갑은 코스모스 아톰 전송, 스테이킹, 그리고 거버넌스 투표 등의 기능을 지원합니다.
 
@@ -8,7 +8,7 @@
 
 또한 루나그램 월렛은 LMI(Lunagram Message Interface)를 통한 송금 요청을 지원합니다. 봇 개발자는 하단에 설명되어있는 표준 인터페이스를 통해서 봇 기능에 코스모스 결재 기능을 사용할 수 있습니다.
 
-## Lunagram Message Interface, LMI
+## Lunagram Message Interface, LMI (BETA)
 
 ### 개요
 
@@ -54,7 +54,7 @@ LMI 메시지의 `message` 필드는 다음과 같은 포맷을 이용해주세�
 ```
 
 
-필드 | 타입 | 설명 
+필드 | 타입 | 설명
 ------|------|---------
 action | String | `send` 또는 `sign`
 requester_t_id | String | LMI message를 보내는 사람의 텔레그램 ID
