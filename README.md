@@ -1,32 +1,97 @@
-## Telegram messenger for Android
+## Lunagram (ALPHA VERSION)
 
-[Telegram](https://telegram.org) is a messaging app with a focus on speed and security. It’s superfast, simple and free.
-This repo contains the official source code for [Telegram App for Android](https://play.google.com/store/apps/details?id=org.telegram.messenger).
+Lunagram is a messenger application based on Telegram with a  built-in Cosmos wallet. Lunagram wallet supports Cosmos Atom transfers, staking, and governance.
 
-## Creating your Telegram Application
+Users can link their Telegram account to a Cosmos wallet by setting their bio as their Cosmos address.
 
-We welcome all developers to use our API and source code to create applications on our platform.
-There are several things we require from **all developers** for the moment.
+Note: By setting your bio as your Cosmos account, your Cosmos address becomes public. Please take precautions regarding dangers this may entail.
 
-1. [**Obtain your own api_id**](https://core.telegram.org/api/obtaining_api_id) for your application.
-2. Please **do not** use the name Telegram for your app — or make sure your users understand that it is unofficial.
-3. Kindly **do not** use our standard logo (white paper plane in a blue circle) as your app's logo.
-3. Please study our [**security guidelines**](https://core.telegram.org/mtproto/security_guidelines) and take good care of your users' data and privacy.
-4. Please remember to publish **your** code too in order to comply with the licences.
+Also, Lunagram wallet implements a transfer request via LMI(Lunamint Message Interface). Bot developers can integrate Cosmos payments by using our standard interface explained below.
 
-### API, Protocol documentation
+## Lunagram Message Interface, LMI
 
-Telegram API manuals: https://core.telegram.org/api
+### Introduction
 
-MTproto protocol manuals: https://core.telegram.org/mtproto
+Lunamint Message Interface, of LMI for short, is a way for Telegram bots or applications to request payments through the Lunagram application.
 
-### Usage
+When a LMI message is sent to a user with the Lunagram application, the Lunagram application creates an inline instance button in the chat. The receiver can then process payments or sign a message by pressing the button.  
 
-**Beware of using the dev branch and uploading it to any markets, in many cases it not will work as expected**.
+### LMI Format (for LMI version 1)
 
-First of all, take a look at **src/main/java/org/telegram/messenger/BuildVars.java** and fill it with correct values.
-Import the root folder into your IDE (tested on Android Studio), then run project.
+**Sample LMI Message**
 
-### Localization
+```
+lmi::1::MX+MCwHCi98HZm/4Zxk03dhX18/opY3CdL2/llztzDZJkMxwm3vXbBArnrxpmxS3l8UT3r4Ya4EDBu9wuL1owE2CkybJxuhLJn9hf13M1/VayKJLH0GLaekQmGtm1wLEh1PYd4Ne3OZp+/fWAQITjoOfffiFlwlY4htSl5h2zQHQ6QulURGnwf4iR2TWJKnXAM46v1EL9qOOkIU5TfBdNHLPqyDdgvdawDKcZjbx2M0W3bpZiPxDYASBVuyAxFR2MFfnidRnQ5neS1thW1vYRhjLi5aOyXAUHtUSXhNHCElnOxKzTI7zfd2vFB/k31pLqRgcAMUuw7fgGZilSVoFX2CdFn8gcKNVEA6STXU+lHMV2OxvFsnwBoMhSv9mBxsloJot+Q3inj3fV5LX+5FT43MpsHAxeCR26YNtTCjafSU=
+```
 
-We moved all translations to https://translations.telegram.org/en/android/. Please use it.
+The LMI message above is divided into three parts: `lmi(prefix)::1(version)::message(encrypted)`
+
+**Note**
+1. The format of the message must follow the above standard.
+2. Message must be encrypted with AES/CBC/PKCS5Padding. (Encryption key = `lunagram`, Encryption iv = `evqndl&wgvhvaoz!`)
+
+Please follow the format below before encrypting the message:
+
+```{
+ "action": "send",
+ "requester_t_id": “lunagrambot”,
+ "tx": {
+  “from”: "cosmos17v0fff40qfwp8l8ruhyjuvh39t8j7qarhkwjpd”,
+  "to": "cosmos17v0fff40qfwp8l8ruhyjuvh39t8j7qarhkwjpd",
+  "denom": “stake”,
+  "amount": “10”,
+  "memo": “blah~blah~”
+ },
+ "callback": {
+  "url": "https://lunatestcallback/",
+  "endpoint": "deposit“,
+  "custom_fields": {
+   “custom_field1”: “It’s custom field1”,
+   “custom_field2”: “It’s custom field2”
+  }
+ }
+}
+```
+
+Field | Type | Description 
+------|------|---------
+action | String | `send`
+requester_t_id | String | Telegram ID the person sending the LMI message
+tx.from | String | (Optional) Cosmos address sending the payment
+tx.to | String | Cosmos address receiving the payment
+tx.denom | String | Token demonination
+tx.amount | String | Token amount 
+tx.memo | String | (Optional) Memo field of the transaction
+callback.url | String | The callback base url that will be receiving the callback after the user's action has been completed. Must end in `/`. Callbacks only support https.
+callback.endpoint | String | Endpoint of the callback url. Please input the full path such as `usr/deposit`
+callback.custom_field | json object / any type | Lunagram sends the callback defined in this field after the user's action has completed.
+
+
+### LMI Callback
+
+**HTTPS / POST / Content-Type: application/json**
+
+After the user has completed the action, Lunagram application sends a callback with the `custom_field` to the url defined with the message `lmi_version:1`.
+
+If the message included in the `custom_field` is as follows:
+
+```
+"custom_field": {
+ “custom_field1”: “It’s custom field1”,
+ “custom_field2”: “It’s custom field2”
+}
+```
+
+The data to be received from the callback should look like this:
+
+```
+{
+ “lmi_version”:1,
+ “custom_field1”: “It’s custom field1”,
+ “custom_field2”: “It’s custom field2”
+}
+```
+
+### WARNING
+
+Callbacks do not guarantee the success of the transaction. In case of a transfer, please refer to callbacks only as a double-checking measure. The best way to confirm a transaction is through checking the blockchain data.
