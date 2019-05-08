@@ -61,7 +61,7 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.RequestDelegate;
 import org.telegram.tgnet.SerializedData;
@@ -1078,6 +1078,7 @@ public class LoginActivity extends BaseFragment {
                     if (!allowCall) {
                         permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
                     }
+                    /*
                     if (!allowSms) {
                         permissionsItems.add(Manifest.permission.RECEIVE_SMS);
                         if (Build.VERSION.SDK_INT >= 23) {
@@ -1088,7 +1089,7 @@ public class LoginActivity extends BaseFragment {
                         permissionsItems.add(Manifest.permission.CALL_PHONE);
                         permissionsItems.add(Manifest.permission.WRITE_CALL_LOG);
                         permissionsItems.add(Manifest.permission.READ_CALL_LOG);
-                    }
+                    }*/
                     boolean ok = true;
                     if (!permissionsItems.isEmpty()) {
                         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
@@ -1250,12 +1251,13 @@ public class LoginActivity extends BaseFragment {
                             if (!allowCall) {
                                 permissionsShowItems.add(Manifest.permission.READ_PHONE_STATE);
                             }
+                            /*
                             if (!allowSms) {
                                 permissionsShowItems.add(Manifest.permission.RECEIVE_SMS);
                                 if (Build.VERSION.SDK_INT >= 23) {
                                     permissionsShowItems.add(Manifest.permission.READ_SMS);
                                 }
-                            }
+                            }*/
                             if (!permissionsShowItems.isEmpty()) {
                                 SharedPreferences preferences = MessagesController.getGlobalMainSettings();
                                 if (preferences.getBoolean("firstloginshow", true) || getParentActivity().shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE) || getParentActivity().shouldShowRequestPermissionRationale(Manifest.permission.RECEIVE_SMS)) {

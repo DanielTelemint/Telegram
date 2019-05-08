@@ -14,7 +14,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +34,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Keep;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -71,7 +75,15 @@ import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
-import com.telemint.messenger.R;
+
+import com.lunamint.lunagram.R;
+import com.lunamint.lunagram.ui.SendCoinActivity;
+import com.lunamint.wallet.model.AccountInfo;
+import com.lunamint.wallet.WalletManager;
+import com.lunamint.wallet.model.CmdResult;
+import com.lunamint.wallet.utils.Parser;
+import com.lunamint.wallet.utils.VarifyUtil;
+
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
@@ -109,6 +121,8 @@ import java.util.Comparator;
 import java.util.concurrent.CountDownLatch;
 
 public class ProfileActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate {
+
+    private ProgressDialog mProgressDialog;
 
     private RecyclerListView listView;
     private LinearLayoutManager layoutManager;
@@ -1311,8 +1325,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 items.add(LocaleController.getString("CallViaTelegram", R.string.CallViaTelegram));
                 actions.add(2);
             }
-			items.add(LocaleController.getString("Call", R.string.Call));
-			actions.add(0);
+            items.add(LocaleController.getString("Call", R.string.Call));
+            actions.add(0);
             items.add(LocaleController.getString("Copy", R.string.Copy));
             actions.add(1);
             builder.setItems(items.toArray(new CharSequence[items.size()]), new DialogInterface.OnClickListener() {
@@ -1344,32 +1358,134 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             showDialog(builder.create());
             return true;
         } else if (position == channelInfoRow || position == userInfoRow || position == userInfoDetailedRow) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
-            builder.setItems(new CharSequence[]{LocaleController.getString("Copy", R.string.Copy)}, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    try {
-                        String about;
-                        if (position == channelInfoRow) {
-                            about = info.about;
+
+            if ((position == userInfoRow || position == userInfoDetailedRow) && VarifyUtil.isValidCosmosAddress(getUserAbout())) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+                builder.setItems(new CharSequence[]{LocaleController.getString("sendToken", R.string.sendToken), LocaleController.getString("Copy", R.string.Copy)}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            getCurrentWalletAccount();
                         } else {
-                            TLRPC.TL_userFull userFull = MessagesController.getInstance(currentAccount).getUserFull(user_id);
-                            about = userFull != null ? userFull.about : null;
+                            try {
+                                String about;
+                                if (position == channelInfoRow) {
+                                    about = info.about;
+                                } else {
+                                    about = getUserAbout();
+                                }
+                                if (TextUtils.isEmpty(about)) {
+                                    return;
+                                }
+                                AndroidUtilities.addToClipboard(about);
+                                Toast.makeText(getParentActivity(), LocaleController.getString("TextCopied", R.string.TextCopied), Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                FileLog.e(e);
+                            }
                         }
-                        if (TextUtils.isEmpty(about)) {
-                            return;
-                        }
-                        AndroidUtilities.addToClipboard(about);
-                        Toast.makeText(getParentActivity(), LocaleController.getString("TextCopied", R.string.TextCopied), Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        FileLog.e(e);
+
                     }
-                }
-            });
-            showDialog(builder.create());
+                });
+                showDialog(builder.create());
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+                builder.setItems(new CharSequence[]{LocaleController.getString("Copy", R.string.Copy)}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
+                            String about;
+                            if (position == channelInfoRow) {
+                                about = info.about;
+                            } else {
+                                about = getUserAbout();
+                            }
+                            if (TextUtils.isEmpty(about)) {
+                                return;
+                            }
+                            AndroidUtilities.addToClipboard(about);
+                            Toast.makeText(getParentActivity(), LocaleController.getString("TextCopied", R.string.TextCopied), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            FileLog.e(e);
+                        }
+                    }
+                });
+                showDialog(builder.create());
+            }
+
             return true;
         }
         return false;
+    }
+
+    private void showProgress() {
+        if (mProgressDialog != null) mProgressDialog.dismiss();
+        mProgressDialog = ProgressDialog.show(getParentActivity(), "", LocaleController.getString("loadingBalance", R.string.loadingBalance), true);
+        mProgressDialog.setCancelable(false);
+    }
+
+    private void hideProgress() {
+        if (mProgressDialog == null) return;
+        mProgressDialog.dismiss();
+        mProgressDialog = null;
+    }
+
+    private void getCurrentWalletAccount() {
+        showProgress();
+        WalletManager.getInstance().getAccountList( new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                CmdResult cmdResult = (CmdResult) msg.getData().getSerializable("result");
+
+                if (cmdResult == null) {
+                    Toast.makeText(getParentActivity(), LocaleController.getString("unknownError", R.string.unknownError), Toast.LENGTH_LONG).show();
+                } else if (cmdResult.getErrMsg() != null) {
+                    Toast.makeText(getParentActivity(), cmdResult.getErrMsg(), Toast.LENGTH_LONG).show();
+                } else {
+                    ArrayList<AccountInfo> accountList = Parser.getAccountList(cmdResult.getData());
+                    if (accountList != null && accountList.size() != 0) {
+                        int accountIdx = 0;
+                        String currentAccountName = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE).getString("currentAccountName", "");
+                        for (int i = 0; accountList.size() > i; i++) {
+                            if (accountList.get(i).getName().equals(currentAccountName)) {
+                                accountIdx = i;
+                                break;
+                            }
+                        }
+                        showSendCoinActivity(accountList.get(accountIdx));
+                    } else {
+                        Toast.makeText(getParentActivity(), LocaleController.getString("noSearchAddressAlert", R.string.noSearchAddressAlert), Toast.LENGTH_LONG).show();
+                    }
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    private void showSendCoinActivity(AccountInfo accountInfo) {
+        if (WalletManager.getInstance().isLowerMinAppVersion) {
+            Toast.makeText(getParentActivity(), LocaleController.getString("lowerAppVersionError", R.string.lowerAppVersionError), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (accountInfo == null || accountInfo.getAddress() == null) {
+            Toast.makeText(getParentActivity(), LocaleController.getString("noSearchAddressAlert", R.string.noSearchAddressAlert), Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(getParentActivity(), SendCoinActivity.class);
+            intent.putExtra("account_name", accountInfo.getName());
+            intent.putExtra("address", accountInfo.getAddress());
+            intent.putExtra("to_address", getUserAbout());
+            intent.putExtra("t_account", currentAccount);
+            intent.putExtra("t_user_id", user_id);
+            getParentActivity().startActivity(intent);
+        }
+    }
+
+    private String getUserAbout() {
+        TLRPC.TL_userFull userFull = MessagesController.getInstance(currentAccount).getUserFull(user_id);
+        return userFull != null ? userFull.about : null;
     }
 
     private void leaveChatPressed() {

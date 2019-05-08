@@ -146,6 +146,14 @@ public class NotificationCenter {
     public static final int playerDidStartPlaying = totalEvents++;
     public static final int closeSearchByActiveAction = totalEvents++;
 
+    // lunagram
+    public static final int transactionCreated = totalEvents++;
+    public static final int balanceChanged = totalEvents++;
+    public static final int stakingChanged = totalEvents++;
+    public static final int accountChanged = totalEvents++;
+    public static final int sentCoin = totalEvents++;
+    public static final int nodeChanged = totalEvents++;
+
     private SparseArray<ArrayList<Object>> observers = new SparseArray<>();
     private SparseArray<ArrayList<Object>> removeAfterBroadcast = new SparseArray<>();
     private SparseArray<ArrayList<Object>> addAfterBroadcast = new SparseArray<>();

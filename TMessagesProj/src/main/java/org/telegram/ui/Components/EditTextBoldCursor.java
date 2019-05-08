@@ -31,7 +31,7 @@ import android.widget.TextView;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -19,7 +19,7 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Xml;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import org.telegram.messenger.time.FastDateFormat;
 import org.telegram.tgnet.ConnectionsManager;
@@ -208,6 +208,7 @@ public class LocaleController {
         languages.add(localeInfo);
         languagesDict.put(localeInfo.shortName, localeInfo);
 
+        /*
         localeInfo = new LocaleInfo();
         localeInfo.name = "Italiano";
         localeInfo.nameEnglish = "Italian";
@@ -260,6 +261,7 @@ public class LocaleController {
         localeInfo.builtIn = true;
         languages.add(localeInfo);
         languagesDict.put(localeInfo.shortName, localeInfo);
+        */
 
         localeInfo = new LocaleInfo();
         localeInfo.name = "한국어";
@@ -270,6 +272,7 @@ public class LocaleController {
         languages.add(localeInfo);
         languagesDict.put(localeInfo.shortName, localeInfo);
 
+        /*
         loadOtherLanguages();
         if (remoteLanguages.isEmpty()) {
             AndroidUtilities.runOnUIThread(new Runnable() {
@@ -297,7 +300,7 @@ public class LocaleController {
                 languages.add(locale);
                 languagesDict.put(locale.getKey(), locale);
             }
-        }
+        }*/
 
         systemDefaultLocale = Locale.getDefault();
         is24HourFormat = DateFormat.is24HourFormat(ApplicationLoader.applicationContext);

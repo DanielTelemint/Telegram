@@ -39,8 +39,8 @@ import android.util.LongSparseArray;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
-import com.telemint.messenger.BuildConfig;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.BuildConfig;
+import com.lunamint.lunagram.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

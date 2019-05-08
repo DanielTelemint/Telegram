@@ -360,7 +360,6 @@ public class ChatItemAnimator extends SimpleItemAnimator{
     public boolean animateChange(final ViewHolder oldHolder, final ViewHolder newHolder,
                                  int fromX, int fromY, int toX, int toY) {
 		/*if(mAddAnimations.remove(oldHolder)){
-			Log.w("11", "old holder is already animating addition!");
 			final ObjectAnimator anim=(ObjectAnimator) oldHolder.itemView.getTag(R.id.tag_current_item_animation);
 			if(anim!=null){
 				anim.setTarget(newHolder.itemView);

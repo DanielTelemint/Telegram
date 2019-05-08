@@ -10,7 +10,7 @@ package org.telegram.messenger;
 
 import android.text.TextUtils;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.tgnet.TLRPC;

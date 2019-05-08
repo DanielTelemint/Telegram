@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.ActivityCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -335,7 +336,7 @@ public class ScrollSlidingTabStrip extends HorizontalScrollView {
     }
 
     public void setUnderlineColorResource(int resId) {
-        underlineColor = getResources().getColor(resId);
+        underlineColor = ActivityCompat.getColor(getContext(), resId);
         invalidate();
     }
 

@@ -15,7 +15,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
 import org.telegram.messenger.AndroidUtilities;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 public class ShareLocationDrawable extends Drawable {
 

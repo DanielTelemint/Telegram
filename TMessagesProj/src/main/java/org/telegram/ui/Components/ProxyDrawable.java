@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 
 import org.telegram.messenger.AndroidUtilities;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.ui.ActionBar.Theme;
 
 public class ProxyDrawable extends Drawable {

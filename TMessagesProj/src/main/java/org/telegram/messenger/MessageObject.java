@@ -23,7 +23,10 @@ import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.SparseArray;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.BuildVars;
+import com.lunamint.lunagram.R;
+import com.lunamint.wallet.model.LMessage;
+import com.lunamint.wallet.utils.MessageUtil;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.tgnet.ConnectionsManager;
@@ -123,6 +126,8 @@ public class MessageObject {
     public static Pattern urlPattern;
 
     public CharSequence vCardData;
+
+    public LMessage lm;
 
     public static class VCardData {
 
@@ -313,18 +318,18 @@ public class MessageObject {
             public float[] heights;
 
             public MessageGroupedLayoutAttempt(int i1, int i2, float f1, float f2) {
-                lineCounts = new int[] {i1, i2};
-                heights = new float[] {f1, f2};
+                lineCounts = new int[]{i1, i2};
+                heights = new float[]{f1, f2};
             }
 
             public MessageGroupedLayoutAttempt(int i1, int i2, int i3, float f1, float f2, float f3) {
-                lineCounts = new int[] {i1, i2, i3};
-                heights = new float[] {f1, f2, f3};
+                lineCounts = new int[]{i1, i2, i3};
+                heights = new float[]{f1, f2, f3};
             }
 
             public MessageGroupedLayoutAttempt(int i1, int i2, int i3, int i4, float f1, float f2, float f3, float f4) {
-                lineCounts = new int[] {i1, i2, i3, i4};
-                heights = new float[] {f1, f2, f3, f4};
+                lineCounts = new int[]{i1, i2, i3, i4};
+                heights = new float[]{f1, f2, f3, f4};
             }
         }
 
@@ -444,7 +449,7 @@ public class MessageObject {
                         position3.set(0, 1, 1, 1, rightWidth, thirdHeight / maxSizeHeight, POSITION_FLAG_RIGHT | POSITION_FLAG_BOTTOM);
                         position3.spanSize = maxSizeWidth;
 
-                        position1.siblingHeights = new float[] {thirdHeight / maxSizeHeight, secondHeight / maxSizeHeight};
+                        position1.siblingHeights = new float[]{thirdHeight / maxSizeHeight, secondHeight / maxSizeHeight};
 
                         if (isOut) {
                             position1.spanSize = maxSizeWidth - rightWidth;
@@ -507,7 +512,7 @@ public class MessageObject {
                             position3.leftSpanOffset = w0;
                             position4.leftSpanOffset = w0;
                         }
-                        position1.siblingHeights = new float[] {h0, h1, h2};
+                        position1.siblingHeights = new float[]{h0, h1, h2};
                         hasSibling = true;
                         maxX = 1;
                     }
@@ -565,7 +570,7 @@ public class MessageObject {
                     MessageGroupedLayoutAttempt attempt = attempts.get(a);
                     float height = 0;
                     float minLineHeight = Float.MAX_VALUE;
-                    for (int b = 0; b < attempt.heights.length; b++){
+                    for (int b = 0; b < attempt.heights.length; b++) {
                         height += attempt.heights[b];
                         if (attempt.heights[b] < minLineHeight) {
                             minLineHeight = attempt.heights[b];
@@ -716,7 +721,7 @@ public class MessageObject {
         eventId = eid;
 
         if (message.replyMessage != null) {
-            replyMessageObject = new MessageObject(accountNum, message.replyMessage, users, chats,  sUsers, sChats, false, eid);
+            replyMessageObject = new MessageObject(accountNum, message.replyMessage, users, chats, sUsers, sChats, false, eid);
         }
 
         TLRPC.User fromUser = null;
@@ -964,13 +969,13 @@ public class MessageObject {
                     if (messageOwner.from_id == UserConfig.getInstance(currentAccount).getClientUserId()) {
                         if (isMissed) {
                             messageText = LocaleController.getString("CallMessageOutgoingMissed", R.string.CallMessageOutgoingMissed);
-                        }else {
+                        } else {
                             messageText = LocaleController.getString("CallMessageOutgoing", R.string.CallMessageOutgoing);
                         }
                     } else {
                         if (isMissed) {
                             messageText = LocaleController.getString("CallMessageIncomingMissed", R.string.CallMessageIncomingMissed);
-                        } else if(call.reason instanceof TLRPC.TL_phoneCallDiscardReasonBusy) {
+                        } else if (call.reason instanceof TLRPC.TL_phoneCallDiscardReasonBusy) {
                             messageText = LocaleController.getString("CallMessageIncomingDeclined", R.string.CallMessageIncomingDeclined);
                         } else {
                             messageText = LocaleController.getString("CallMessageIncoming", R.string.CallMessageIncoming);
@@ -1116,7 +1121,6 @@ public class MessageObject {
         if (messageText == null) {
             messageText = "";
         }
-
         setType();
         measureInlineBotButtons();
 
@@ -1127,6 +1131,7 @@ public class MessageObject {
         int dateMonth = rightNow.get(Calendar.MONTH);
         dateKey = String.format("%d_%02d_%02d", dateYear, dateMonth, dateDay);
         monthKey = String.format("%d_%02d", dateYear, dateMonth);
+
 
         createMessageSendInfo();
         generateCaption();
@@ -1207,6 +1212,7 @@ public class MessageObject {
 
         TLRPC.Peer to_id = new TLRPC.TL_peerChannel();
         to_id.channel_id = chat.id;
+
 
         TLRPC.Message message = null;
         if (event.action instanceof TLRPC.TL_channelAdminLogEventActionChangeTitle) {
@@ -1613,7 +1619,7 @@ public class MessageObject {
             message.out = false;
             message.id = mid[0]++;
             message.reply_to_msg_id = 0;
-            message.flags = message.flags &~ TLRPC.MESSAGE_FLAG_EDITED;
+            message.flags = message.flags & ~TLRPC.MESSAGE_FLAG_EDITED;
             if (chat.megagroup) {
                 message.flags |= TLRPC.MESSAGE_FLAG_MEGAGROUP;
             }
@@ -1640,7 +1646,6 @@ public class MessageObject {
         if (messageText == null) {
             messageText = "";
         }
-
         setType();
         measureInlineBotButtons();
         generateCaption();
@@ -1678,6 +1683,8 @@ public class MessageObject {
                 }
             }
         }
+
+
         if (mediaController.isPlayingMessage(this)) {
             MessageObject player = mediaController.getPlayingMessageObject();
             audioProgress = player.audioProgress;
@@ -2056,6 +2063,9 @@ public class MessageObject {
                 type = 10;
             }
         }
+
+        if (messageOwner.message != null && (messageOwner.message.contains("Tx Hash :") || messageOwner.message.contains("트랜잭션 해시 :") || MessageUtil.isLmiMessage(messageOwner.message)))
+            type = 26656;
         if (oldType != 1000 && oldType != type) {
             generateThumbs(false);
         }
@@ -2758,9 +2768,11 @@ public class MessageObject {
     }
 
     public void generateLayout(TLRPC.User fromUser) {
-        if (type != 0 || messageOwner.to_id == null || TextUtils.isEmpty(messageText)) {
+        if ((type != 0 && type != 26656) || messageOwner.to_id == null || TextUtils.isEmpty(messageText)) {
             return;
         }
+
+        replaceLunagramMessage();
 
         generateLinkDescription();
         textLayoutBlocks = new ArrayList<>();
@@ -2781,16 +2793,16 @@ public class MessageObject {
 
         boolean useManualParse = !hasEntities && (
                 eventId != 0 ||
-                messageOwner instanceof TLRPC.TL_message_old ||
-                messageOwner instanceof TLRPC.TL_message_old2 ||
-                messageOwner instanceof TLRPC.TL_message_old3 ||
-                messageOwner instanceof TLRPC.TL_message_old4 ||
-                messageOwner instanceof TLRPC.TL_messageForwarded_old ||
-                messageOwner instanceof TLRPC.TL_messageForwarded_old2 ||
-                messageOwner instanceof TLRPC.TL_message_secret ||
-                messageOwner.media instanceof TLRPC.TL_messageMediaInvoice ||
-                isOut() && messageOwner.send_state != MESSAGE_SEND_STATE_SENT ||
-                messageOwner.id < 0 || messageOwner.media instanceof TLRPC.TL_messageMediaUnsupported);
+                        messageOwner instanceof TLRPC.TL_message_old ||
+                        messageOwner instanceof TLRPC.TL_message_old2 ||
+                        messageOwner instanceof TLRPC.TL_message_old3 ||
+                        messageOwner instanceof TLRPC.TL_message_old4 ||
+                        messageOwner instanceof TLRPC.TL_messageForwarded_old ||
+                        messageOwner instanceof TLRPC.TL_messageForwarded_old2 ||
+                        messageOwner instanceof TLRPC.TL_message_secret ||
+                        messageOwner.media instanceof TLRPC.TL_messageMediaInvoice ||
+                        isOut() && messageOwner.send_state != MESSAGE_SEND_STATE_SENT ||
+                        messageOwner.id < 0 || messageOwner.media instanceof TLRPC.TL_messageMediaUnsupported);
 
         if (useManualParse) {
             addLinks(isOutOwner(), messageText);
@@ -2809,7 +2821,7 @@ public class MessageObject {
         int maxWidth;
         boolean needShare = eventId == 0 && !isOutOwner() && (
                 messageOwner.fwd_from != null && (messageOwner.fwd_from.saved_from_peer != null || messageOwner.fwd_from.from_id != 0 || messageOwner.fwd_from.channel_id != 0) ||
-                messageOwner.from_id > 0 && (messageOwner.to_id.channel_id != 0 || messageOwner.to_id.chat_id != 0 || messageOwner.media instanceof TLRPC.TL_messageMediaGame || messageOwner.media instanceof TLRPC.TL_messageMediaInvoice)
+                        messageOwner.from_id > 0 && (messageOwner.to_id.channel_id != 0 || messageOwner.to_id.chat_id != 0 || messageOwner.media instanceof TLRPC.TL_messageMediaGame || messageOwner.media instanceof TLRPC.TL_messageMediaInvoice)
         );
         generatedWithMinSize = AndroidUtilities.isTablet() ? AndroidUtilities.getMinTabletSide() : AndroidUtilities.displaySize.x;
         maxWidth = generatedWithMinSize - AndroidUtilities.dp(needShare || eventId != 0 ? 132 : 80);
@@ -3516,7 +3528,7 @@ public class MessageObject {
             }
             if (photoHeight > maxHeight) {
                 photoWidth *= maxHeight / photoHeight;
-                photoHeight = (int)maxHeight;
+                photoHeight = (int) maxHeight;
             }
             if (photoWidth > maxWidth) {
                 photoHeight *= maxWidth / photoWidth;
@@ -3924,7 +3936,7 @@ public class MessageObject {
                     return messageOwner.fwd_from.from_id;
                 } else if (messageOwner.fwd_from.channel_id != 0) {
                     return -messageOwner.fwd_from.channel_id;
-                }else {
+                } else {
                     return -messageOwner.fwd_from.saved_from_peer.chat_id;
                 }
             }
@@ -3978,6 +3990,38 @@ public class MessageObject {
                     mediaExists = FileLoader.getPathToAttach(currentPhotoObject, true).exists();
                 }
             }
+        }
+    }
+
+    private void replaceLunagramMessage() {
+        if (messageOwner == null || messageOwner.message == null) return;
+
+        if (MessageUtil.isLmiMessage(messageOwner.message)) {
+            String lm = MessageUtil.getLmiMessage(messageOwner.message);
+            if (MessageUtil.isUnsupportMessage(lm)) {
+                messageText = lm;
+                this.lm = null;
+            } else {
+                LMessage lmObj = new LMessage();
+                lmObj.setMessage(lm);
+
+                if (lmObj.getAction() != null) {
+                    if (lmObj.getAction().equals("send")) {
+                        this.lm = lmObj;
+                        this.lm.setVersion(MessageUtil.getVersion(messageOwner.message));
+
+                        String lmsg = MessageUtil.getRequestMessage(this.lm);
+                        messageText = lmsg;
+                    } else {
+                        messageText = MessageUtil.getUnsupportedMessage() + "\n\n" + LocaleController.getString("requestName", R.string.requestName) + " : " + lmObj.getAction();
+                    }
+                } else {
+                    messageText = MessageUtil.getUnsupportedMessage();
+                }
+            }
+        } else if (BuildVars.containLunagramSupportedMessage(messageOwner.message)) {
+            int idx = messageOwner.message.indexOf(BuildVars.getLunagramSupportedMessage(messageOwner.message));
+            messageText = messageOwner.message.substring(0, idx);
         }
     }
 }

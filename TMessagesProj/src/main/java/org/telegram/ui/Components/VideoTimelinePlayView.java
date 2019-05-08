@@ -25,7 +25,7 @@ import android.view.View;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import java.util.ArrayList;
 

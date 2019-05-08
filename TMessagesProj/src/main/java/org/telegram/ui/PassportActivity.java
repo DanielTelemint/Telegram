@@ -67,7 +67,7 @@ import org.json.JSONObject;
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
-import com.telemint.messenger.BuildConfig;
+import com.lunamint.lunagram.BuildConfig;
 import org.telegram.messenger.DownloadController;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
@@ -77,7 +77,7 @@ import org.telegram.messenger.MediaController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MrzRecognizer;
 import org.telegram.messenger.NotificationCenter;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.messenger.SecureDocument;
 import org.telegram.messenger.SecureDocumentKey;
 import org.telegram.messenger.SendMessagesHelper;
@@ -5304,12 +5304,13 @@ public class PassportActivity extends BaseFragment implements NotificationCenter
                 if (!allowCall) {
                     permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
                 }
+                /*
                 if (!allowSms) {
                     permissionsItems.add(Manifest.permission.RECEIVE_SMS);
                     if (Build.VERSION.SDK_INT >= 23) {
                         permissionsItems.add(Manifest.permission.READ_SMS);
                     }
-                }
+                }*/
                 if (!permissionsItems.isEmpty()) {
                     if (getParentActivity().shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE) || getParentActivity().shouldShowRequestPermissionRationale(Manifest.permission.RECEIVE_SMS)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());

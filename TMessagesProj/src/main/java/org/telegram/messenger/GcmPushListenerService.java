@@ -13,7 +13,7 @@ import android.util.Base64;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

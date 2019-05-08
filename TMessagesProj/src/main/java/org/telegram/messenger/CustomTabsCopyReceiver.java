@@ -13,7 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 public class CustomTabsCopyReceiver extends BroadcastReceiver {
 

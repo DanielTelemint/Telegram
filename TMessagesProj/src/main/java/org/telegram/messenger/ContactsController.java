@@ -26,7 +26,7 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.support.SparseLongArray;

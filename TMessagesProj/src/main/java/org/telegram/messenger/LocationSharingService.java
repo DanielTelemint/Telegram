@@ -16,7 +16,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.LaunchActivity;

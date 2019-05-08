@@ -52,7 +52,7 @@ import org.telegram.messenger.Intro;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.RequestDelegate;
@@ -361,15 +361,12 @@ public class IntroActivity extends Activity implements NotificationCenter.Notifi
             }
             justCreated = false;
         }
-        AndroidUtilities.checkForCrashes(this);
-        AndroidUtilities.checkForUpdates(this);
         ConnectionsManager.getInstance(currentAccount).setAppPaused(false, false);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        AndroidUtilities.unregisterUpdates();
         ConnectionsManager.getInstance(currentAccount).setAppPaused(true, false);
     }
 

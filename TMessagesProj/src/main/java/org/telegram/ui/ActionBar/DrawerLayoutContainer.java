@@ -17,17 +17,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Keep;
-import android.support.v4.widget.DrawerLayout;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -35,7 +37,8 @@ import android.widget.ListView;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLog;
-import com.telemint.messenger.R;
+
+import com.lunamint.lunagram.R;
 
 public class DrawerLayoutContainer extends FrameLayout {
 
@@ -276,7 +279,16 @@ public class DrawerLayoutContainer extends FrameLayout {
         }
     }
 
-    /*
+    private void setMinDrawerTouchX() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        minDrawerTouchX = size.x * 0.2f;
+    }
+
+    private float minDrawerTouchX = 0;
+
     public boolean onTouchEvent(MotionEvent ev) {
         if (!parentActionBarLayout.checkTransitionAnimation()) {
             if (drawerOpened && ev != null && ev.getX() > drawerPosition && !startedTracking) {
@@ -285,6 +297,9 @@ public class DrawerLayoutContainer extends FrameLayout {
                 }
                 return true;
             }
+
+            if (minDrawerTouchX == 0) setMinDrawerTouchX();
+            if (!drawerOpened && !startedTracking && !maybeStartTracking && minDrawerTouchX < ev.getX()) return false;
 
             if (allowOpenDrawer && parentActionBarLayout.fragmentsStack.size() == 1) {
                 if (ev != null && (ev.getAction() == MotionEvent.ACTION_DOWN || ev.getAction() == MotionEvent.ACTION_MOVE) && !startedTracking && !maybeStartTracking) {
@@ -346,7 +361,7 @@ public class DrawerLayoutContainer extends FrameLayout {
             return startedTracking;
         }
         return false;
-    }*/
+    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -378,7 +393,7 @@ public class DrawerLayoutContainer extends FrameLayout {
                 if (drawerLayout != child) {
                     child.layout(lp.leftMargin, lp.topMargin + getPaddingTop(), lp.leftMargin + child.getMeasuredWidth(), lp.topMargin + child.getMeasuredHeight() + getPaddingTop());
                 } else {
-                    child.layout(-child.getMeasuredWidth(), lp.topMargin + getPaddingTop(), 0, lp.topMargin + child.getMeasuredHeight() +  + getPaddingTop());
+                    child.layout(-child.getMeasuredWidth(), lp.topMargin + getPaddingTop(), 0, lp.topMargin + child.getMeasuredHeight() + +getPaddingTop());
                 }
             } else {
                 try {

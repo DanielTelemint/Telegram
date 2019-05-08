@@ -20,7 +20,7 @@ import android.widget.ImageView;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.ui.ActionBar.AlertDialog;
 
 import static android.graphics.Paint.FILTER_BITMAP_FLAG;

@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -30,6 +31,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -67,8 +69,19 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
-import com.telemint.messenger.R;
-import com.telemint.ui.adapter.MainTabAdapter;
+
+import com.lunamint.lunagram.BuildConfig;
+import com.lunamint.lunagram.R;
+import com.lunamint.lunagram.ui.ManageWalletActivity;
+import com.lunamint.lunagram.ui.adapter.MainTabAdapter;
+import com.lunamint.lunagram.ui.component.SwipeControlViewPager;
+import com.lunamint.lunagram.ui.view.WalletView;
+import com.lunamint.wallet.ApiUtils;
+import com.lunamint.wallet.LunaService;
+import com.lunamint.wallet.WalletManager;
+import com.lunamint.wallet.model.Coin;
+import com.lunamint.wallet.model.LunaStatus;
+import com.lunamint.wallet.utils.NetworkUtil;
 
 import org.telegram.messenger.UserConfig;
 import org.telegram.ui.ActionBar.AlertDialog;
@@ -114,8 +127,13 @@ import org.telegram.ui.Components.StickersAlert;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DialogsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
-    
+
+    private MainTabAdapter mainTabAdapter;
     private RecyclerListView listView;
     private LinearLayoutManager layoutManager;
     private DialogsAdapter dialogsAdapter;
@@ -136,6 +154,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private RecyclerView sideMenu;
     private ChatActivityEnterView commentView;
     private ActionBarMenuItem switchItem;
+
+    private ActionBarMenuItem searchItem;
+    private ActionBarMenuItem settingWalletItem;
 
     private AlertDialog permissionDialog;
     private boolean askAboutContacts = true;
@@ -221,6 +242,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             NotificationCenter.getInstance(currentAccount).addObserver(this, NotificationCenter.dialogsUnreadCounterChanged);
 
             NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.didSetPasscode);
+
+            NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.transactionCreated);
+            NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.accountChanged);
+            NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.balanceChanged);
+            NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.stakingChanged);
+            NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.sentCoin);
+            NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.nodeChanged);
         }
 
         if (!dialogsLoaded[currentAccount]) {
@@ -262,6 +290,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.dialogsUnreadCounterChanged);
 
             NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.didSetPasscode);
+
+            NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.transactionCreated);
+            NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.accountChanged);
+            NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.balanceChanged);
+            NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.stakingChanged);
+            NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.sentCoin);
+            NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.nodeChanged);
         }
         if (commentView != null) {
             commentView.onDestroy();
@@ -289,7 +324,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             updatePasscodeButton();
             updateProxyButton(false);
         }
-        final ActionBarMenuItem item = menu.addItem(0, R.drawable.ic_ab_search).setIsSearchField(true).setActionBarMenuItemSearchListener(new ActionBarMenuItem.ActionBarMenuItemSearchListener() {
+        searchItem = menu.addItem(0, R.drawable.ic_ab_search).setIsSearchField(true).setActionBarMenuItemSearchListener(new ActionBarMenuItem.ActionBarMenuItemSearchListener() {
             @Override
             public void onSearchExpand() {
                 searching = true;
@@ -375,7 +410,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 }
             }
         });
-        item.getSearchField().setHint(LocaleController.getString("Search", R.string.Search));
+        searchItem.getSearchField().setHint(LocaleController.getString("Search", R.string.Search));
         if (onlySelect) {
             actionBar.setBackButtonImage(R.drawable.ic_ab_back);
             if (dialogsType == 3 && selectAlertString == null) {
@@ -396,6 +431,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
             actionBar.setSupportsHolidayImage(true);
         }
+
+        /*
+        settingWalletItem = menu.addItem(3, R.drawable.icon_setting_wallet);
+        settingWalletItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSettingWalletActivity();
+            }
+        });
+        settingWalletItem.setVisibility(View.GONE);*/
+
         actionBar.setTitleActionRunnable(new Runnable() {
             @Override
             public void run() {
@@ -434,7 +480,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
         }
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setBackgroundColor(context.getResources().getColor(R.color.actionbar_bg));
+        actionBar.setBackgroundColor(ActivityCompat.getColor(context, R.color.actionbar_bg));
 
 
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
@@ -603,32 +649,36 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         };
         fragmentView = contentView;
 
-
-
         LinearLayout mainLayout = new LinearLayout(context);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         contentView.addView(mainLayout);
 
         final TabLayout tabLayout = new TabLayout(context);
-        tabLayout.setSelectedTabIndicatorColor(context.getResources().getColor(R.color.tab_indicator));
-        tabLayout.setTabTextColors(context.getResources().getColor(R.color.tab_text),context.getResources().getColor(R.color.tab_text_selected));
+        tabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(context, R.color.tab_indicator));
+        tabLayout.setTabTextColors(ActivityCompat.getColor(context, R.color.tab_text), ActivityCompat.getColor(context, R.color.tab_text_selected));
         mainLayout.addView(tabLayout);
 
 
-        ViewPager viewPager = new ViewPager(context);
+        SwipeControlViewPager viewPager = new SwipeControlViewPager(context);
         mainLayout.addView(viewPager);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setSwipeEnabled(true);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 2){
+                if (position == 0) {
                     floatingButton.setVisibility(View.VISIBLE);
-                }else{
+                    searchItem.setVisibility(View.VISIBLE);
+//                    settingWalletItem.setVisibility(View.GONE);
+                } else {
+                    actionBar.closeSearchField(true);
                     floatingButton.setVisibility(View.GONE);
+                    searchItem.setVisibility(View.GONE);
+//                    settingWalletItem.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -646,10 +696,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         listView.setLayoutAnimation(null);
         listView.setTag(4);
 
-        viewPager.setAdapter(new MainTabAdapter(context, this, listView));
-        tabLayout.getTabAt(0).setText(context.getString(R.string.chat));
-        tabLayout.getTabAt(1).setText(context.getString(R.string.wallet));
 
+        WalletView walletView = new WalletView(context);
+
+        mainTabAdapter = new MainTabAdapter(context, listView, walletView);
+        viewPager.setAdapter(mainTabAdapter);
+        tabLayout.getTabAt(0).setText(LocaleController.getString("chat", R.string.chat));
+        tabLayout.getTabAt(1).setText(LocaleController.getString("wallet", R.string.wallet));
 
         layoutManager = new LinearLayoutManager(context) {
             @Override
@@ -1193,7 +1246,6 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 }
             }
         });
-
         unreadFloatingButton = new ImageView(context);
         unreadFloatingButton.setScaleType(ImageView.ScaleType.CENTER);
 
@@ -1534,6 +1586,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onResume() {
         super.onResume();
+
         if (dialogsAdapter != null) {
             dialogsAdapter.notifyDataSetChanged();
         }
@@ -1555,6 +1608,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                                 askAboutContacts = param != 0;
                                 MessagesController.getGlobalNotificationsSettings().edit().putBoolean("askAboutContacts", askAboutContacts).commit();
                                 askForPermissons(false);
+                                getLunaStatus();
                             }
                         });
                         showDialog(permissionDialog = builder.create());
@@ -1562,14 +1616,25 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                         builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
                         builder.setMessage(LocaleController.getString("PermissionStorage", R.string.PermissionStorage));
-                        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
+                        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                getLunaStatus();
+                            }
+                        });
                         showDialog(permissionDialog = builder.create());
                     } else {
                         askForPermissons(true);
                     }
+                } else {
+                    getLunaStatus();
                 }
             }
+        } else {
+            getLunaStatus();
         }
+
+        if (mainTabAdapter != null) mainTabAdapter.onResume();
     }
 
     @Override
@@ -1578,6 +1643,26 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (commentView != null) {
             commentView.onResume();
         }
+    }
+
+    private void onTransactionCreated(String tx) {
+        if (mainTabAdapter != null) mainTabAdapter.onTransactionCreated(tx);
+    }
+
+    private void onAccountChanged() {
+        if (mainTabAdapter != null) mainTabAdapter.onAccountChanged();
+    }
+
+    private void onBalanceChanged(Response<ArrayList<Coin>> response) {
+        if (mainTabAdapter != null) mainTabAdapter.onBalanceChanged(response);
+    }
+
+    private void onStakingChanged() {
+        if (mainTabAdapter != null) mainTabAdapter.onStakingChanged();
+    }
+
+    private void onNodeChanged() {
+        if (mainTabAdapter != null) mainTabAdapter.onNodeChanged();
     }
 
     private void checkUnreadCount(boolean animated) {
@@ -1938,7 +2023,24 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     }).start();
                 }
             }*/
+        } else if (id == NotificationCenter.transactionCreated) {
+            onTransactionCreated(((String) args[0]));
+        } else if (id == NotificationCenter.accountChanged) {
+            onAccountChanged();
+        } else if (id == NotificationCenter.balanceChanged) {
+            onBalanceChanged(((Response<ArrayList<Coin>>) args[0]));
+        } else if (id == NotificationCenter.stakingChanged) {
+            onStakingChanged();
+        } else if (id == NotificationCenter.sentCoin) {
+
+        } else if (id == NotificationCenter.nodeChanged) {
+            onNodeChanged();
         }
+    }
+
+    private void showSettingWalletActivity() {
+        Intent intent = new Intent(getParentActivity(), ManageWalletActivity.class);
+        getParentActivity().startActivity(intent);
     }
 
     private ArrayList<TLRPC.TL_dialog> getDialogsArray() {
@@ -1952,6 +2054,59 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             return MessagesController.getInstance(currentAccount).dialogsForward;
         }
         return null;
+    }
+
+    private void getLunaStatus() {
+        Activity activity = getParentActivity();
+        if (activity != null) {
+            if (!NetworkUtil.isNetworkAvailable(getParentActivity()))
+                mainTabAdapter.showError(LocaleController.getString("unableNetworkError", R.string.unableNetworkError));
+
+            LunaService lunaService = ApiUtils.getLunaService();
+            lunaService.getStatus("android").enqueue(new Callback<LunaStatus>() {
+                @Override
+                public void onResponse(Call<LunaStatus> call, Response<LunaStatus> response) {
+                    if (response.code() == 200 && response.body() != null) {
+                        try {
+                            WalletManager.getInstance().activatedSend = response.body().getStatus().getActivatedSend();
+
+                            if (mainTabAdapter == null) return;
+                            if (response.body().getStatus().getIsMaintenance()) {
+                                mainTabAdapter.setMaintenance(true);
+                                mainTabAdapter.showError(LocaleController.getString("maintenance", R.string.maintenance) + "\n" + response.body().getStatus().getCompletionTime());
+                                WalletManager.getInstance().isLowerMinAppVersion = false;
+                            } else if (response.body().getVersion().getMinVersion() > BuildConfig.VERSION_CODE) {
+                                WalletManager.getInstance().isLowerMinAppVersion = true;
+                                mainTabAdapter.showError(LocaleController.getString("needUpdate", R.string.needUpdate));
+                                mainTabAdapter.setMaintenance(false);
+                            } else {
+                                WalletManager.getInstance().isLowerMinAppVersion = false;
+                                mainTabAdapter.setMaintenance(false);
+                            }
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            WalletManager.getInstance().isLowerMinAppVersion = false;
+                            mainTabAdapter.setMaintenance(false);
+                            mainTabAdapter.showError(LocaleController.getString("unknownError", R.string.unknownError) + "\nHttp status " + response.code());
+                        }
+                    } else {
+                        WalletManager.getInstance().isLowerMinAppVersion = false;
+                        mainTabAdapter.setMaintenance(false);
+                        mainTabAdapter.showError(LocaleController.getString("internalServerError", R.string.internalServerError));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LunaStatus> call, Throwable t) {
+                    if (mainTabAdapter == null) return;
+                    WalletManager.getInstance().isLowerMinAppVersion = false;
+                    mainTabAdapter.setMaintenance(false);
+                    if (!NetworkUtil.isNetworkAvailable(getParentActivity()))
+                        mainTabAdapter.showError(LocaleController.getString("unableNetworkError", R.string.unableNetworkError));
+
+                }
+            });
+        }
     }
 
     public void setSideMenu(RecyclerView recyclerView) {

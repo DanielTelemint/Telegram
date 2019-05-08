@@ -52,7 +52,7 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLog;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.RequestDelegate;
 import org.telegram.tgnet.TLObject;
@@ -718,12 +718,13 @@ public class ChangePhoneActivity extends BaseFragment {
                     if (!allowCall) {
                         permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
                     }
+                    /*
                     if (!allowSms) {
                         permissionsItems.add(Manifest.permission.RECEIVE_SMS);
                         if (Build.VERSION.SDK_INT >= 23) {
                             permissionsItems.add(Manifest.permission.READ_SMS);
                         }
-                    }
+                    }*/
                     if (!permissionsItems.isEmpty()) {
                         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
                         if (preferences.getBoolean("firstlogin", true) || getParentActivity().shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE) || getParentActivity().shouldShowRequestPermissionRationale(Manifest.permission.RECEIVE_SMS)) {

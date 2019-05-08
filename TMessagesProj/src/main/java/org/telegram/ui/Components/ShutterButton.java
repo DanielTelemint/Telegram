@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import org.telegram.messenger.AndroidUtilities;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 public class ShutterButton extends View {
 

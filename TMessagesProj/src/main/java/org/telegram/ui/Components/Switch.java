@@ -35,7 +35,7 @@ import android.widget.CompoundButton;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 import org.telegram.ui.ActionBar.Theme;
 
 public class Switch extends CompoundButton {

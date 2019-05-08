@@ -24,7 +24,7 @@ import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.widget.Toast;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.messenger.support.SparseLongArray;

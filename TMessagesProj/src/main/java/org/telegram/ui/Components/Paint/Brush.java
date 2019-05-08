@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.telegram.messenger.ApplicationLoader;
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 public interface Brush {
 

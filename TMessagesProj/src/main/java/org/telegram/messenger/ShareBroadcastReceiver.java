@@ -12,7 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.telemint.messenger.R;
+import com.lunamint.lunagram.R;
 
 public class ShareBroadcastReceiver extends BroadcastReceiver {
 

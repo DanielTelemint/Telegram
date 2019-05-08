@@ -23,9 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Outline;
@@ -41,9 +39,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -54,7 +50,6 @@ import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
-import android.util.Base64;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
@@ -80,7 +75,9 @@ import android.widget.Toast;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.PhoneFormat.PhoneFormat;
-import com.telemint.messenger.BuildConfig;
+
+import com.lunamint.lunagram.BuildConfig;
+
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.DataQuery;
@@ -100,7 +97,6 @@ import org.telegram.messenger.VideoEditedInfo;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.exoplayer2.ui.AspectRatioFrameLayout;
 import org.telegram.messenger.support.SparseLongArray;
-import org.telegram.messenger.support.widget.DefaultItemAnimator;
 import org.telegram.messenger.support.widget.GridLayoutManager;
 import org.telegram.messenger.support.widget.GridLayoutManagerFixed;
 import org.telegram.messenger.support.widget.LinearLayoutManager;
@@ -117,7 +113,14 @@ import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
-import com.telemint.messenger.R;
+
+import com.lunamint.lunagram.R;
+import com.lunamint.lunagram.ui.SendCoinActivity;
+import com.lunamint.lunagram.ui.TransactionDetailActivity;
+import com.lunamint.wallet.WalletManager;
+import com.lunamint.wallet.model.LMessage;
+import com.lunamint.wallet.utils.Parser;
+
 import org.telegram.messenger.UserConfig;
 import org.telegram.ui.ActionBar.ActionBarLayout;
 import org.telegram.ui.ActionBar.AlertDialog;
@@ -148,7 +151,6 @@ import org.telegram.messenger.ImageReceiver;
 import org.telegram.ui.Components.ChatAttachAlert;
 import org.telegram.ui.Components.ChatAvatarContainer;
 import org.telegram.ui.Components.ChatBigEmptyView;
-import org.telegram.ui.Components.ChatItemAnimator;
 import org.telegram.ui.Components.CombinedDrawable;
 import org.telegram.ui.Components.CorrectlyMeasuringTextView;
 import org.telegram.ui.Components.EmbedBottomSheet;
@@ -176,7 +178,6 @@ import org.telegram.ui.Components.voip.VoIPHelper;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -379,13 +380,13 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private HashMap<String, ArrayList<MessageObject>> messagesByDays = new HashMap<>();
     protected ArrayList<MessageObject> messages = new ArrayList<>();
     private LongSparseArray<MessageObject.GroupedMessages> groupedMessagesMap = new LongSparseArray<>();
-    private int maxMessageId[] = new int[] {Integer.MAX_VALUE, Integer.MAX_VALUE};
-    private int minMessageId[] = new int[] {Integer.MIN_VALUE, Integer.MIN_VALUE};
-    private int maxDate[] = new int[] {Integer.MIN_VALUE, Integer.MIN_VALUE};
+    private int maxMessageId[] = new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE};
+    private int minMessageId[] = new int[]{Integer.MIN_VALUE, Integer.MIN_VALUE};
+    private int maxDate[] = new int[]{Integer.MIN_VALUE, Integer.MIN_VALUE};
     private int minDate[] = new int[2];
     private boolean endReached[] = new boolean[2];
     private boolean cacheEndReached[] = new boolean[2];
-    private boolean forwardEndReached[] = new boolean[] {true, true};
+    private boolean forwardEndReached[] = new boolean[]{true, true};
     private boolean loading;
     private boolean firstLoading = true;
     private boolean firstUnreadSent = false;
@@ -1206,7 +1207,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     SendMessagesHelper.getInstance(currentAccount).sendMessage("/settings", dialog_id, null, null, false, null, null, null);
                 } else if (id == search) {
                     openSearchWithText(null);
-                } else if(id == call) {
+                } else if (id == call) {
                     if (currentUser != null && getParentActivity() != null) {
                         VoIPHelper.startCall(currentUser, getParentActivity(), MessagesController.getInstance(currentAccount).getUserFull(currentUser.id));
                     }
@@ -4924,7 +4925,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             int checkLoadCount;
             if (scroll) {
                 checkLoadCount = 25;
-            } else  {
+            } else {
                 checkLoadCount = 5;
             }
             if (totalItemCount - firstVisibleItem - visibleItemCount <= checkLoadCount && !loading) {
@@ -5336,7 +5337,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             chatActivityEnterView.setButtons(botButtons);
         }
     }
-    
+
     public void hideFieldPanel() {
         showFieldPanel(false, null, null, null, null, false);
     }
@@ -5871,7 +5872,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 roundVideoContainer.setTranslationY(-AndroidUtilities.roundMessageSize - 100);
                 fragmentView.invalidate();
                 MessageObject messageObject = MediaController.getInstance().getPlayingMessageObject();
-                if (messageObject != null && messageObject.isRoundVideo() && messageObject.eventId == 0 &&checkTextureViewPosition) {
+                if (messageObject != null && messageObject.isRoundVideo() && messageObject.eventId == 0 && checkTextureViewPosition) {
                     MediaController.getInstance().setCurrentRoundVisible(false);
                 }
             } else {
@@ -9956,8 +9957,6 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         }
 
 
-
-
         updateBottomOverlay();
     }
 
@@ -10085,13 +10084,13 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             chatActivityEnterView.setFieldFocused(false);
         }
         if (chatAttachAlert != null) {
-            if (!ignoreAttachOnPause){
+            if (!ignoreAttachOnPause) {
                 chatAttachAlert.onPause();
             } else {
                 ignoreAttachOnPause = false;
             }
         }
-        CharSequence[] message = new CharSequence[] {draftMessage};
+        CharSequence[] message = new CharSequence[]{draftMessage};
         ArrayList<TLRPC.MessageEntity> entities = DataQuery.getInstance(currentAccount).getEntities(message);
         DataQuery.getInstance(currentAccount).saveDraft(dialog_id, message[0], entities, replyMessage != null ? replyMessage.messageOwner : null, !searchWebpage);
 
@@ -10428,7 +10427,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
             if (user != null && user.id != UserConfig.getInstance(currentAccount).getClientUserId() && loadParticipant != 2) {
                 if (loadParticipant == 1 && !currentChat.creator) {
-                    final AlertDialog progressDialog[] = new AlertDialog[] {new AlertDialog(getParentActivity(), 1)};
+                    final AlertDialog progressDialog[] = new AlertDialog[]{new AlertDialog(getParentActivity(), 1)};
 
                     TLRPC.TL_channels_getParticipant req = new TLRPC.TL_channels_getParticipant();
                     req.channel = MessagesController.getInputChannel(currentChat);
@@ -10785,7 +10784,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             TLRPC.TL_messageActionPhoneCall call = (TLRPC.TL_messageActionPhoneCall) message.messageOwner.action;
                             items.add((call.reason instanceof TLRPC.TL_phoneCallDiscardReasonMissed || call.reason instanceof TLRPC.TL_phoneCallDiscardReasonBusy) && !message.isOutOwner() ? LocaleController.getString("CallBack", R.string.CallBack) : LocaleController.getString("CallAgain", R.string.CallAgain));
                             options.add(18);
-                            if(VoIPHelper.canRateCall(call)){
+                            if (VoIPHelper.canRateCall(call)) {
                                 items.add(LocaleController.getString("CallMessageReportProblem", R.string.CallMessageReportProblem));
                                 options.add(19);
                             }
@@ -11062,7 +11061,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         checkEditTimer();
 
         chatActivityEnterView.setAllowStickersAndGifs(false, false);
-        
+
         updatePinnedMessageView(true);
         updateVisibleRows();
 
@@ -11421,12 +11420,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 /*if (!TextUtils.isEmpty(selectedObject.messageOwner.media.vcard)) {
                     openVCard(selectedObject.messageOwner.media.vcard, selectedObject.messageOwner.media.first_name, selectedObject.messageOwner.media.last_name);
                 } else {*/
-                    Bundle args = new Bundle();
-                    args.putInt("user_id", selectedObject.messageOwner.media.user_id);
-                    args.putString("phone", selectedObject.messageOwner.media.phone_number);
-                    args.putBoolean("addContact", true);
-                    presentFragment(new ContactAddActivity(args));
-                    break;
+                Bundle args = new Bundle();
+                args.putInt("user_id", selectedObject.messageOwner.media.user_id);
+                args.putString("phone", selectedObject.messageOwner.media.phone_number);
+                args.putBoolean("addContact", true);
+                presentFragment(new ContactAddActivity(args));
+                break;
                 //}
             }
             case 16: {
@@ -12367,6 +12366,16 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             }
                         } else if (type == 5) {
                             openVCard(messageObject.messageOwner.media.vcard, messageObject.messageOwner.media.first_name, messageObject.messageOwner.media.last_name);
+                        } else if (type == 26656) {
+                            if (cell.getMessageObject().lm != null) {
+                                if (!WalletManager.getInstance().isLowerMinAppVersion) {
+                                    showSendCoinActivity(cell.getMessageObject().lm);
+                                } else {
+                                    Toast.makeText(getParentActivity(), LocaleController.getString("lowerAppVersionError", R.string.lowerAppVersionError), Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                showTransactionDetailActivity(cell.getMessageObject().messageText.toString());
+                            }
                         } else {
                             if (messageObject.messageOwner.media != null && messageObject.messageOwner.media.webpage != null) {
                                 Browser.openUrl(getParentActivity(), messageObject.messageOwner.media.webpage.url);
@@ -12823,6 +12832,24 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 FileLog.e(e);
             }
         }
+    }
+
+    //Todo: translation
+    private void showTransactionDetailActivity(String msg) {
+        String hash = Parser.getTxHashFromTelegramMsg(msg);
+        if (hash.equals("")) {
+            Toast.makeText(getParentActivity(), "Failed to get the hash.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent = new Intent(getParentActivity(), TransactionDetailActivity.class);
+        intent.putExtra("hash", hash);
+        getParentActivity().startActivity(intent);
+    }
+
+    private void showSendCoinActivity(LMessage lmsg) {
+        Intent intent = new Intent(getParentActivity(), SendCoinActivity.class);
+        intent.putExtra("lm", lmsg);
+        getParentActivity().startActivity(intent);
     }
 
     @Override
