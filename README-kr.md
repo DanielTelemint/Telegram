@@ -56,7 +56,7 @@ LMI 메시지의 `message` 필드는 다음과 같은 포맷을 이용해주세�
 
 필드 | 타입 | 설명
 ------|------|---------
-action | String | `send` 또는 `sign`
+action | String | `send`
 requester_t_id | String | LMI message를 보내는 사람의 텔레그램 ID
 tx.from | String | (선택) 토큰을 보내는 유저의 코스모스 주소
 tx.to | String | 토큰을 받는 유저의 코스모스 주소
